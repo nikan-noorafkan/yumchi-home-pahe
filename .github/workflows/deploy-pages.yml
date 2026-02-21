@@ -35,6 +35,14 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+
+      - name: Verify no unresolved merge conflicts
+        run: |
+          if git grep -nE '^(<<<<<<<|=======|>>>>>>>)' -- .; then
+            echo 'Unresolved merge conflict markers found.'
+            exit 1
+          fi
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
