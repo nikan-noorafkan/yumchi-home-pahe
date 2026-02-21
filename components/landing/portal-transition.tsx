@@ -6,11 +6,14 @@ interface PortalTransitionProps {
   isActive: boolean
   targetWorld: "cook" | "maps" | null
   onComplete: () => void
+  locale?: "en" | "fa"
 }
 
-export function PortalTransition({ isActive, targetWorld, onComplete }: PortalTransitionProps) {
+export function PortalTransition({ isActive, targetWorld, onComplete, locale = "en" }: PortalTransitionProps) {
   const color = targetWorld === "cook" ? "#e75e3c" : "#5bc2aa"
-  const label = targetWorld === "cook" ? "Entering Kitchen..." : "Exploring Maps..."
+  const label = locale === "fa"
+    ? (targetWorld === "cook" ? "در حال ورود به آشپزخانه..." : "در حال کاوش نقشه‌ها...")
+    : (targetWorld === "cook" ? "Entering Kitchen..." : "Exploring Maps...")
 
   return (
     <AnimatePresence>

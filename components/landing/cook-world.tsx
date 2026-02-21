@@ -19,6 +19,7 @@ interface CookWorldProps {
   isVisible: boolean
   onEnterApp: () => void
   onBack: () => void
+  locale?: "en" | "fa"
 }
 
 interface FeatureStation {
@@ -31,7 +32,7 @@ interface FeatureStation {
   xp: number
 }
 
-const FEATURES: FeatureStation[] = [
+const FEATURES_EN: FeatureStation[] = [
   {
     id: "gamified",
     title: "Gamified Cooking",
@@ -79,16 +80,28 @@ const FEATURES: FeatureStation[] = [
   },
 ]
 
+const FEATURES_FA: FeatureStation[] = [
+  { ...FEATURES_EN[0], title: "آشپزی بازی‌محور", description: "مهارت آشپزی‌ات را ارتقا بده و برای هر غذایی که حرفه‌ای می‌سازی XP بگیر." },
+  { ...FEATURES_EN[1], title: "دستورهای هوشمند", description: "دستورهای مبتنی بر هوش مصنوعی که با مواد اولیه و سطح مهارت تو هماهنگ می‌شوند." },
+  { ...FEATURES_EN[2], title: "آشپزی هدایت‌شده", description: "راهنمای گام‌به‌گام با تایمرهای هوشمند و کمک لحظه‌ای." },
+  { ...FEATURES_EN[3], title: "برنامه‌ریزی وعده‌ها", description: "برنامه‌ی هفتگی هوشمند مطابق سلیقه، سبک زندگی و هدف‌های تو." },
+  { ...FEATURES_EN[4], title: "هوش مواد اولیه", description: "روی هر ماده بزن و ببین با آن چه غذاهای جذابی می‌توانی بسازی." },
+]
+
+
+
 function FeatureCard({
   feature,
   index,
   onInteract,
   isCompleted,
+  locale = "en",
 }: {
   feature: FeatureStation
   index: number
   onInteract: () => void
   isCompleted: boolean
+  locale?: "en" | "fa"
 }) {
   const [isPressed, setIsPressed] = useState(false)
 
@@ -107,9 +120,9 @@ function FeatureCard({
       }}
     >
       <div
-        className="relative overflow-hidden rounded-2xl p-6 h-full"
+        className="relative overflow-hidden rounded-2xl p-6 h-full backdrop-blur-[2px]"
         style={{
-          background: `linear-gradient(135deg, ${feature.color}08, ${feature.color}15)`,
+          background: `linear-gradient(135deg, ${feature.color}12, ${feature.color}24)`,
           border: `1.5px solid ${isCompleted ? feature.color : feature.color + "30"}`,
         }}
       >
@@ -189,7 +202,7 @@ function FeatureCard({
           <div className="flex items-center gap-1.5 mt-1">
             <Zap className="w-3.5 h-3.5" style={{ color: feature.color }} />
             <span className="text-xs font-medium" style={{ color: feature.color }}>
-              {isCompleted ? "Discovered" : "Tap to discover"}
+              {isCompleted ? (locale === "fa" ? "کشف شد" : "Discovered") : (locale === "fa" ? "برای کشف لمس کن" : "Tap to discover")}
             </span>
           </div>
         </div>
@@ -198,7 +211,8 @@ function FeatureCard({
   )
 }
 
-export function CookWorld({ isVisible, onEnterApp, onBack }: CookWorldProps) {
+export function CookWorld({ isVisible, onEnterApp, onBack, locale = "en" }: CookWorldProps) {
+  const FEATURES = locale === "fa" ? FEATURES_FA : FEATURES_EN
   const [completedFeatures, setCompletedFeatures] = useState<Set<string>>(new Set())
   const [totalXP, setTotalXP] = useState(0)
   const portalReady = completedFeatures.size >= 2
@@ -214,6 +228,7 @@ export function CookWorld({ isVisible, onEnterApp, onBack }: CookWorldProps) {
 
   return (
     <motion.div
+      dir={locale === "fa" ? "rtl" : "ltr"}
       className="relative min-h-screen flex flex-col items-center z-10"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -242,7 +257,7 @@ export function CookWorld({ isVisible, onEnterApp, onBack }: CookWorldProps) {
             onClick={onBack}
             whileHover={{ x: -4 }}
           >
-            <span>&larr;</span> Back to worlds
+            <span>&larr;</span> {locale === "fa" ? "بازگشت به دنیاها" : "Back to worlds"}
           </motion.button>
 
           {/* XP Counter */}
@@ -281,12 +296,12 @@ export function CookWorld({ isVisible, onEnterApp, onBack }: CookWorldProps) {
         </motion.div>
 
         <h1 className="text-3xl md:text-5xl font-extrabold text-foreground mb-3 text-balance">
-          Welcome to your
+          {locale === "fa" ? "به دنیای" : "Welcome to your"}
           <br />
-          <span style={{ color: "#e75e3c" }}>cooking universe</span>
+          <span style={{ color: "#e75e3c" }}>{locale === "fa" ? "آشپزی خوش آمدی" : "cooking universe"}</span>
         </h1>
         <p className="text-muted-foreground text-base md:text-lg max-w-lg mx-auto leading-relaxed">
-          Discover what makes Yumchi Cook magical. Tap each feature to experience it.
+          {locale === "fa" ? "ویژگی‌های جادویی Yumchi Cook را کشف کن. روی هر قابلیت بزن و تجربه‌اش کن." : "Discover what makes Yumchi Cook magical. Tap each feature to experience it."}
         </p>
 
         {/* Progress indicator */}
@@ -324,6 +339,7 @@ export function CookWorld({ isVisible, onEnterApp, onBack }: CookWorldProps) {
               index={i}
               onInteract={() => handleFeatureInteract(feature)}
               isCompleted={completedFeatures.has(feature.id)}
+              locale={locale}
             />
           ))}
         </div>
@@ -364,7 +380,11 @@ export function CookWorld({ isVisible, onEnterApp, onBack }: CookWorldProps) {
           transition={{ duration: 2, repeat: Infinity }}
         >
           <ChefHat className="w-5 h-5" />
-          {portalReady ? "Start Cooking" : `Discover ${2 - completedFeatures.size} more feature${2 - completedFeatures.size !== 1 ? "s" : ""}`}
+          {portalReady
+            ? (locale === "fa" ? "شروع آشپزی" : "Start Cooking")
+            : (locale === "fa"
+              ? `کشف ${2 - completedFeatures.size} قابلیت دیگر`
+              : `Discover ${2 - completedFeatures.size} more feature${2 - completedFeatures.size !== 1 ? "s" : ""}`)}
           {portalReady && <ArrowRight className="w-5 h-5" />}
         </motion.button>
 
@@ -374,7 +394,7 @@ export function CookWorld({ isVisible, onEnterApp, onBack }: CookWorldProps) {
           onClick={onEnterApp}
           whileHover={{ scale: 1.02 }}
         >
-          Enter kitchen now &rarr;
+          {locale === "fa" ? "همین حالا وارد آشپزخانه شو ←" : "Enter kitchen now &rarr;"}
         </motion.button>
       </motion.div>
     </motion.div>

@@ -80,7 +80,7 @@ function CityMapVisualization() {
   ]
 
   return (
-    <div className="relative w-full h-48 md:h-64 overflow-hidden rounded-2xl" style={{ background: "#5bc2aa12" }}>
+    <div className="relative w-full h-48 md:h-64 overflow-hidden rounded-2xl backdrop-blur-[2px]" style={{ background: "#5bc2aa20", border: "1px solid #5bc2aa2e" }}>
       {/* Grid lines */}
       <svg className="absolute inset-0 w-full h-full opacity-10" aria-hidden="true">
         {[...Array(8)].map((_, i) => (
@@ -192,12 +192,12 @@ function FeaturePreviewCard({
       onClick={() => setIsExpanded(!isExpanded)}
     >
       <motion.div
-        className="flex items-start gap-4 p-4 rounded-xl transition-all"
+        className="flex items-start gap-4 p-4 rounded-xl transition-all backdrop-blur-[1px]"
         style={{
-          background: isExpanded ? `${feature.color}10` : "transparent",
+          background: isExpanded ? `${feature.color}14` : "transparent",
           border: `1.5px solid ${isExpanded ? feature.color + "40" : "transparent"}`,
         }}
-        whileHover={{ x: 4, background: `${feature.color}08` }}
+        whileHover={{ x: 4, background: `${feature.color}12` }}
       >
         <motion.div
           className="flex items-center justify-center w-10 h-10 rounded-xl text-card shrink-0"
@@ -223,7 +223,7 @@ function FeaturePreviewCard({
             )}
           </AnimatePresence>
           {!isExpanded && (
-            <p className="text-muted-foreground/60 text-xs mt-0.5">Tap to preview</p>
+            <p className="text-muted-foreground/80 text-xs mt-0.5">Tap to preview</p>
           )}
         </div>
       </motion.div>
