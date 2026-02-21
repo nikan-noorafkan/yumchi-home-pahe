@@ -90,6 +90,13 @@ export default function PersianHomePage() {
 
         {phase === "mapsPreview" && (
           <motion.div key="mapsPreview" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <MapsWorld
+              isVisible={phase === "mapsPreview"}
+              onNotify={() => {}}
+              onGoToCook={handleGoToCookFromMaps}
+              onBack={handleBackToWorlds}
+              locale="fa"
+            />
             <MapsWorld isVisible={phase === "mapsPreview"} onNotify={() => {}} onGoToCook={handleGoToCookFromMaps} onBack={handleBackToWorlds} />
           </motion.div>
         )}

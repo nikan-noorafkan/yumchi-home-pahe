@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion"
 import { useState } from "react"
+import { usePathname } from "next/navigation"
 import {
   Map,
   MapPin,
