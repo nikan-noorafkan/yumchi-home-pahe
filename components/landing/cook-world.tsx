@@ -107,9 +107,9 @@ function FeatureCard({
       }}
     >
       <div
-        className="relative overflow-hidden rounded-2xl p-6 h-full"
+        className="relative overflow-hidden rounded-2xl p-6 h-full backdrop-blur-[2px]"
         style={{
-          background: `linear-gradient(135deg, ${feature.color}08, ${feature.color}15)`,
+          background: `linear-gradient(135deg, ${feature.color}12, ${feature.color}24)`,
           border: `1.5px solid ${isCompleted ? feature.color : feature.color + "30"}`,
         }}
       >
