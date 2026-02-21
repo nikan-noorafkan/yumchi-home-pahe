@@ -97,6 +97,7 @@ export default function PersianHomePage() {
               onBack={handleBackToWorlds}
               locale="fa"
             />
+            <MapsWorld isVisible={phase === "mapsPreview"} onNotify={() => {}} onGoToCook={handleGoToCookFromMaps} onBack={handleBackToWorlds} />
           </motion.div>
         )}
 

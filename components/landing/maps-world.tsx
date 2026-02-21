@@ -227,7 +227,7 @@ function FeaturePreviewCard({
             )}
           </AnimatePresence>
           {!isExpanded && (
-            <p className="text-muted-foreground/80 text-xs mt-0.5">{isFa ? "برای پیش‌نمایش لمس کن" : "Tap to preview"}</p>
+            <p className="text-muted-foreground/80 text-xs mt-0.5">Tap to preview</p>
           )}
         </div>
       </motion.div>
@@ -236,9 +236,7 @@ function FeaturePreviewCard({
 }
 
 export function MapsWorld({ isVisible, onNotify, onGoToCook, onBack, locale = "en" }: MapsWorldProps) {
-  const pathname = usePathname()
-  // Keep /fa path fallback so merged branches still render Persian copy reliably
-  const isFa = locale === "fa" || pathname?.startsWith("/fa")
+  const isFa = locale === "fa"
   const localizedFeatures = PREVIEW_FEATURES.map((feature) => {
     if (!isFa) return feature
     if (feature.id === "dish-finder") {
