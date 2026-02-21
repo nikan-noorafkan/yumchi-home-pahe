@@ -61,6 +61,10 @@ export default function HomePage() {
 
   return (
     <main className="relative min-h-screen overflow-x-hidden">
+      <a href="/fa" className="absolute top-4 right-4 z-20 rounded-full px-3 py-1.5 text-xs font-bold border border-border bg-card/80 backdrop-blur-sm hover:bg-card transition-colors">
+        فارسی
+      </a>
+
       {/* Floating food particles - always present */}
       <FloatingParticles
         intensity={

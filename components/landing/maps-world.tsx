@@ -22,6 +22,7 @@ interface MapsWorldProps {
   onNotify: () => void
   onGoToCook: () => void
   onBack: () => void
+  locale?: "en" | "fa"
 }
 
 interface PreviewFeature {
@@ -80,7 +81,7 @@ function CityMapVisualization() {
   ]
 
   return (
-    <div className="relative w-full h-48 md:h-64 overflow-hidden rounded-2xl" style={{ background: "#5bc2aa12" }}>
+    <div className="relative w-full h-48 md:h-64 overflow-hidden rounded-2xl backdrop-blur-[2px]" style={{ background: "#5bc2aa20", border: "1px solid #5bc2aa2e" }}>
       {/* Grid lines */}
       <svg className="absolute inset-0 w-full h-full opacity-10" aria-hidden="true">
         {[...Array(8)].map((_, i) => (
@@ -177,9 +178,11 @@ function CityMapVisualization() {
 function FeaturePreviewCard({
   feature,
   index,
+  isFa,
 }: {
   feature: PreviewFeature
   index: number
+  isFa: boolean
 }) {
   const [isExpanded, setIsExpanded] = useState(false)
 
@@ -192,12 +195,12 @@ function FeaturePreviewCard({
       onClick={() => setIsExpanded(!isExpanded)}
     >
       <motion.div
-        className="flex items-start gap-4 p-4 rounded-xl transition-all"
+        className="flex items-start gap-4 p-4 rounded-xl transition-all backdrop-blur-[1px]"
         style={{
-          background: isExpanded ? `${feature.color}10` : "transparent",
+          background: isExpanded ? `${feature.color}14` : "transparent",
           border: `1.5px solid ${isExpanded ? feature.color + "40" : "transparent"}`,
         }}
-        whileHover={{ x: 4, background: `${feature.color}08` }}
+        whileHover={{ x: 4, background: `${feature.color}12` }}
       >
         <motion.div
           className="flex items-center justify-center w-10 h-10 rounded-xl text-card shrink-0"
@@ -223,7 +226,7 @@ function FeaturePreviewCard({
             )}
           </AnimatePresence>
           {!isExpanded && (
-            <p className="text-muted-foreground/60 text-xs mt-0.5">Tap to preview</p>
+            <p className="text-muted-foreground/80 text-xs mt-0.5">{isFa ? "برای پیش‌نمایش لمس کن" : "Tap to preview"}</p>
           )}
         </div>
       </motion.div>
@@ -231,7 +234,21 @@ function FeaturePreviewCard({
   )
 }
 
-export function MapsWorld({ isVisible, onNotify, onGoToCook, onBack }: MapsWorldProps) {
+export function MapsWorld({ isVisible, onNotify, onGoToCook, onBack, locale = "en" }: MapsWorldProps) {
+  const isFa = locale === "fa"
+  const localizedFeatures = PREVIEW_FEATURES.map((feature) => {
+    if (!isFa) return feature
+    if (feature.id === "dish-finder") {
+      return { ...feature, title: "بهترین غذا را فوری پیدا کن", description: "براساس هوس، سبک غذا یا حال‌وهوا جست‌وجو کن. هوش مصنوعی ما بهترین غذا را در بهترین رستوران پیدا می‌کند." }
+    }
+    if (feature.id === "mood-discovery") {
+      return { ...feature, title: "کشف بر پایه حال‌وهوا", description: "حال ماجراجویی داری؟ فضای دنج می‌خواهی؟ یا حال جشن داری؟ حال‌وهوایت پیشنهادها را می‌سازد." }
+    }
+    if (feature.id === "dish-radar") {
+      return { ...feature, title: "رادار غذای امضادار", description: "غذاهای معروف اطرافت را کشف کن و ببین هر رستوران با کدام غذا مشهور شده." }
+    }
+    return { ...feature, title: "پیشنهاد هوشمند رستوران‌گردی", description: "سلیقه‌ات را به مرور یاد می‌گیریم تا با هر وعده پیشنهادهای دقیق‌تری بگیری." }
+  })
   const [notifyEmail, setNotifyEmail] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
 
@@ -246,6 +263,7 @@ export function MapsWorld({ isVisible, onNotify, onGoToCook, onBack }: MapsWorld
 
   return (
     <motion.div
+      dir={isFa ? "rtl" : "ltr"}
       className="relative min-h-screen flex flex-col items-center z-10"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -274,7 +292,7 @@ export function MapsWorld({ isVisible, onNotify, onGoToCook, onBack }: MapsWorld
             onClick={onBack}
             whileHover={{ x: -4 }}
           >
-            <span>&larr;</span> Back to worlds
+            <span>&larr;</span> {isFa ? "بازگشت به دنیاها" : "Back to worlds"}
           </motion.button>
 
           <div
@@ -282,7 +300,7 @@ export function MapsWorld({ isVisible, onNotify, onGoToCook, onBack }: MapsWorld
             style={{ background: "#f9bf43", color: "#443422" }}
           >
             <Star className="w-3 h-3" />
-            PREVIEW
+            {isFa ? "پیش‌نمایش" : "PREVIEW"}
           </div>
         </div>
       </motion.div>
@@ -307,12 +325,12 @@ export function MapsWorld({ isVisible, onNotify, onGoToCook, onBack }: MapsWorld
         </motion.div>
 
         <h1 className="text-3xl md:text-5xl font-extrabold text-foreground mb-3 text-balance">
-          Your food city
+          {isFa ? "شهر غذایی تو" : "Your food city"}
           <br />
-          <span style={{ color: "#5bc2aa" }}>is being mapped</span>
+          <span style={{ color: "#5bc2aa" }}>{isFa ? "در حال نقشه‌برداری است" : "is being mapped"}</span>
         </h1>
         <p className="text-muted-foreground text-base md:text-lg max-w-lg mx-auto leading-relaxed">
-          Yumchi Maps will transform how you discover food. Get a sneak peek at what{"'"}s cooking.
+          {isFa ? "Yumchi Maps روش کشف غذا را متحول می‌کند. پیش‌نمایشی از آینده‌ی خوشمزه ببین." : "Yumchi Maps will transform how you discover food. Get a sneak peek at what's cooking."}
         </p>
       </motion.div>
 
@@ -335,9 +353,9 @@ export function MapsWorld({ isVisible, onNotify, onGoToCook, onBack }: MapsWorld
       >
         <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-hide">
           {[
-            { label: "Select your mood", icon: <Heart className="w-5 h-5" />, color: "#e75e3c" },
-            { label: "Discover restaurants", icon: <Utensils className="w-5 h-5" />, color: "#f9bf43" },
-            { label: "Find signature dishes", icon: <Star className="w-5 h-5" />, color: "#5bc2aa" },
+            { label: isFa ? "حال‌وهوا را انتخاب کن" : "Select your mood", icon: <Heart className="w-5 h-5" />, color: "#e75e3c" },
+            { label: isFa ? "رستوران‌ها را کشف کن" : "Discover restaurants", icon: <Utensils className="w-5 h-5" />, color: "#f9bf43" },
+            { label: isFa ? "غذاهای امضادار را پیدا کن" : "Find signature dishes", icon: <Star className="w-5 h-5" />, color: "#5bc2aa" },
           ].map((step, i) => (
             <motion.div
               key={step.label}
@@ -375,11 +393,11 @@ export function MapsWorld({ isVisible, onNotify, onGoToCook, onBack }: MapsWorld
           animate={{ opacity: 1 }}
           transition={{ delay: 0.9 }}
         >
-          Upcoming features
+          {isFa ? "ویژگی‌های آینده" : "Upcoming features"}
         </motion.h3>
         <div className="flex flex-col gap-1">
-          {PREVIEW_FEATURES.map((feature, i) => (
-            <FeaturePreviewCard key={feature.id} feature={feature} index={i} />
+          {localizedFeatures.map((feature, i) => (
+            <FeaturePreviewCard key={feature.id} feature={feature} index={i} isFa={isFa} />
           ))}
         </div>
       </div>
@@ -393,7 +411,7 @@ export function MapsWorld({ isVisible, onNotify, onGoToCook, onBack }: MapsWorld
       >
         <div className="text-center">
           <p className="text-lg font-bold text-foreground mb-3">
-            Yumchi Maps is cooking...
+            {isFa ? "Yumchi Maps در حال آماده‌سازی است..." : "Yumchi Maps is cooking..."}
           </p>
           {/* Progress bar */}
           <div className="relative h-2 rounded-full overflow-hidden mx-auto max-w-xs" style={{ background: "#e0d5c4" }}>
@@ -417,7 +435,7 @@ export function MapsWorld({ isVisible, onNotify, onGoToCook, onBack }: MapsWorld
               transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
             />
           </div>
-          <p className="text-xs text-muted-foreground mt-2">68% complete</p>
+          <p className="text-xs text-muted-foreground mt-2">{isFa ? "۶۸٪ تکمیل" : "68% complete"}</p>
         </div>
       </motion.div>
 
@@ -441,11 +459,11 @@ export function MapsWorld({ isVisible, onNotify, onGoToCook, onBack }: MapsWorld
               >
                 <input
                   type="email"
-                  placeholder="your@email.com"
+                  placeholder={isFa ? "ایمیل@شما.com" : "your@email.com"}
                   value={notifyEmail}
                   onChange={(e) => setNotifyEmail(e.target.value)}
                   className="flex-1 px-4 py-3.5 bg-transparent text-foreground placeholder:text-muted-foreground/50 text-sm focus:outline-none"
-                  aria-label="Email for notification"
+                  aria-label={isFa ? "ایمیل برای اطلاع‌رسانی" : "Email for notification"}
                 />
                 <button
                   onClick={handleNotify}
@@ -453,7 +471,7 @@ export function MapsWorld({ isVisible, onNotify, onGoToCook, onBack }: MapsWorld
                   style={{ background: "#5bc2aa" }}
                 >
                   <Bell className="w-4 h-4" />
-                  Notify Me
+                  {isFa ? "من را باخبر کن" : "Notify Me"}
                 </button>
               </div>
             </motion.div>
@@ -472,10 +490,8 @@ export function MapsWorld({ isVisible, onNotify, onGoToCook, onBack }: MapsWorld
               >
                 <Star className="w-8 h-8 mx-auto mb-2" style={{ color: "#5bc2aa" }} fill="#5bc2aa" />
               </motion.div>
-              <p className="font-bold text-foreground">You{"'"}re on the list!</p>
-              <p className="text-sm text-muted-foreground mt-1">
-                We{"'"}ll notify you when Maps is ready to explore.
-              </p>
+              <p className="font-bold text-foreground">{isFa ? "ثبت شدی!" : "You're on the list!"}</p>
+              <p className="text-sm text-muted-foreground mt-1">{isFa ? "به‌محض آماده شدن Maps به تو خبر می‌دهیم." : "We'll notify you when Maps is ready to explore."}</p>
             </motion.div>
           )}
         </AnimatePresence>
@@ -499,7 +515,7 @@ export function MapsWorld({ isVisible, onNotify, onGoToCook, onBack }: MapsWorld
           whileTap={{ scale: 0.97 }}
         >
           <ChefHat className="w-5 h-5" />
-          Start cooking while we prepare your food adventures
+          {isFa ? "تا آماده شدن ماجراجویی‌های غذایی‌ات، آشپزی را شروع کن" : "Start cooking while we prepare your food adventures"}
           <ArrowRight className="w-5 h-5" />
         </motion.button>
       </motion.div>

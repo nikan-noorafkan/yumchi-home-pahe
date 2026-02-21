@@ -2,6 +2,14 @@
   "name": "my-project",
   "version": "0.1.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nikan-noorafkan/yumchi-home-pahe.git"
+  },
+  "homepage": "https://github.com/nikan-noorafkan/yumchi-home-pahe",
+  "bugs": {
+    "url": "https://github.com/nikan-noorafkan/yumchi-home-pahe/issues"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
