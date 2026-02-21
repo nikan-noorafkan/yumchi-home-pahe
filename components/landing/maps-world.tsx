@@ -237,6 +237,7 @@ function FeaturePreviewCard({
 
 export function MapsWorld({ isVisible, onNotify, onGoToCook, onBack, locale = "en" }: MapsWorldProps) {
   const pathname = usePathname()
+  // Keep /fa path fallback so merged branches still render Persian copy reliably
   const isFa = locale === "fa" || pathname?.startsWith("/fa")
   const localizedFeatures = PREVIEW_FEATURES.map((feature) => {
     if (!isFa) return feature
