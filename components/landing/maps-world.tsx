@@ -226,7 +226,7 @@ function FeaturePreviewCard({
             )}
           </AnimatePresence>
           {!isExpanded && (
-            <p className="text-muted-foreground/80 text-xs mt-0.5">{isFa ? "برای پیش‌نمایش لمس کن" : "Tap to preview"}</p>
+            <p className="text-muted-foreground/80 text-xs mt-0.5">Tap to preview</p>
           )}
         </div>
       </motion.div>
