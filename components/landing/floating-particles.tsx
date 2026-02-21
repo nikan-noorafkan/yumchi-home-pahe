@@ -33,7 +33,7 @@ export function FloatingParticles({ intensity = 1 }: { intensity?: number }) {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    const count = Math.floor(35 * intensity)
+    const count = Math.floor(28 * intensity)
     const particles: Particle[] = []
 
     for (let i = 0; i < count; i++) {
@@ -43,7 +43,7 @@ export function FloatingParticles({ intensity = 1 }: { intensity?: number }) {
         size: 14 + Math.random() * 22,
         speedX: (Math.random() - 0.5) * 0.4,
         speedY: (Math.random() - 0.5) * 0.3 - 0.15,
-        opacity: 0.15 + Math.random() * 0.35,
+        opacity: 0.08 + Math.random() * 0.2,
         color: COLORS[Math.floor(Math.random() * COLORS.length)],
         emoji: FOOD_ITEMS[Math.floor(Math.random() * FOOD_ITEMS.length)],
         rotation: Math.random() * 360,

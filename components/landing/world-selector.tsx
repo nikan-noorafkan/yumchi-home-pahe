@@ -38,9 +38,9 @@ export function WorldSelector({ onSelect, isVisible }: WorldSelectorProps) {
 
       {/* Cook World */}
       <motion.button
-        className="relative flex-1 overflow-hidden rounded-3xl border-2 border-transparent cursor-pointer group w-full lg:w-auto"
+        className="relative flex-1 overflow-hidden rounded-3xl border-2 border-transparent cursor-pointer group w-full lg:w-auto backdrop-blur-[2px]"
         style={{
-          background: "linear-gradient(135deg, #e75e3c15, #f9bf4320, #e75e3c10)",
+          background: "linear-gradient(135deg, rgba(231,94,60,0.16), rgba(249,191,67,0.20), rgba(255,248,239,0.92))",
         }}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
@@ -140,9 +140,9 @@ export function WorldSelector({ onSelect, isVisible }: WorldSelectorProps) {
 
       {/* Maps World */}
       <motion.button
-        className="relative flex-1 overflow-hidden rounded-3xl border-2 border-transparent cursor-pointer group w-full lg:w-auto"
+        className="relative flex-1 overflow-hidden rounded-3xl border-2 border-transparent cursor-pointer group w-full lg:w-auto backdrop-blur-[2px]"
         style={{
-          background: "linear-gradient(135deg, #5bc2aa15, #f9bf4315, #5bc2aa10)",
+          background: "linear-gradient(135deg, rgba(91,194,170,0.16), rgba(249,191,67,0.14), rgba(246,251,247,0.92))",
         }}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
